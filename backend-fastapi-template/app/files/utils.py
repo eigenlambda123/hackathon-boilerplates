@@ -12,5 +12,13 @@ def validate_filename(filename: str):
         raise HTTPException(status_code=400, detail=f"File type .{ext} not allowed")
     return filename
 
-def get_file_path(filename: str):
+def get_user_folder(user_id: str | int):
+    folder = os.path.join(BASE_DIR, str(user_id))
+    os.makedirs(folder, exist_ok=True)
+    return folder
+
+def get_file_path(filename: str, user_id: str | int = None):
+    if user_id:
+        folder = get_user_folder(user_id)
+        return os.path.join(folder, filename)
     return os.path.join(BASE_DIR, filename)
