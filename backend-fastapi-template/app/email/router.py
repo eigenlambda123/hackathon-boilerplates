@@ -11,7 +11,7 @@ async def send_test_email(background_tasks: BackgroundTasks, recipient: str):
     subject = "Hackathon Boilerplate Test Email"
     body = """
     <h2>Hackathon Boilerplate Email Test</h2>
-    <p>Dabalyu!</p>
+    <p>Dabalyu</p>
     """
     background_tasks.add_task(send_email, subject, [recipient], body)
     return {"message": f"Email to {recipient} is being sent in background."}
