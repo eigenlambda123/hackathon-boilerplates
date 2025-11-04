@@ -5,11 +5,13 @@ psycopg2-binary
 sqlmodel
 python-dotenv
 pydantic-settings
-passlib
 
-# Auth
+
+# Auth and Hashing
 python-jose[cryptography]
-bcrypt==4.3.0
+passlib==1.7.4
+bcrypt==4.0.1
+
 
 # File handling
 python-multipart

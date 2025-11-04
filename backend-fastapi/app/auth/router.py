@@ -15,11 +15,17 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserRead)
 def register(user: UserCreate, db: Session = Depends(get_session)):
+    # Check if the email is already registered
     db_user = get_user_by_email(db, user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    user.password = get_password_hash(user.password)
-    return create_user(db, user)
+    
+    # create_user will handle hashing
+    created_user = create_user(db, user)
+    print("Stored hash:", created_user.password)
+    
+    return created_user
+
 
 @router.post("/login")
 def login(form_data: UserLogin, db: Session = Depends(get_session)):
@@ -29,7 +35,7 @@ def login(form_data: UserLogin, db: Session = Depends(get_session)):
     token = create_access_token({"user_id": user.id})
     return {"access_token": token, "token_type": "bearer"}
 
-@router.get("/me")
+@router.get("/me")  
 def auth_me(current_user = Depends(get_current_user)):
     return {"user": current_user, "status": "authenticated"}
 
