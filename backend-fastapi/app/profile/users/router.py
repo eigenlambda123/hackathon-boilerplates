@@ -8,7 +8,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/", response_model=UserRead)
 def create_user(user: UserCreate, db: Session = Depends(get_session)):
-    return crud.create_user(db=db, user=user)
+    return crud.create_user(db=db, user_data=user)
 
 @router.get("/", response_model=list[UserRead])
 def get_all_users(db: Session = Depends(get_session)):

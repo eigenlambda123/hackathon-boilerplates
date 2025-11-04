@@ -18,6 +18,7 @@ class UserUpdate(BaseModel):
 # Use this if we're linking to the Role model
 class UserCreate(UserBase):
     role_id: int | None = None
+    role_name: str | None = None
 
 # Use this if we're using the lightweight role implementation
 # class UserRead(UserBase):
