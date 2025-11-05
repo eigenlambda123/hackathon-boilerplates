@@ -3,6 +3,7 @@ from .manager import manager
 from .schemas import Notification
 from .utils import send_notification
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/notifications", tags=["notifications"])
@@ -24,11 +25,11 @@ async def websocket_endpoint(websocket: WebSocket):
         logger.info("WebSocket connection accepted")
         
         try:
-            await websocket.send_text("✅ Connection established!")
+            await websocket.send_text(json.dumps({"type": "info", "message": "Connected"}))
             while True:
                 data = await websocket.receive_text()
                 logger.debug(f"Received message: {data}")
-                await websocket.send_text(f"Message received: {data}")
+                await manager.send_personal_message({"type": "echo", "message": data}, websocket)
                 
         except WebSocketDisconnect:
             logger.info("Client disconnected normally")
